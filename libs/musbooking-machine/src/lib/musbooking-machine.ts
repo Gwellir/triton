@@ -3,7 +3,10 @@ import { yclientsRecordToMusbookingOrder } from '@triton/common';
 import * as db from '@triton/db';
 import { BookingDocument } from '@triton/db';
 import * as api from '@triton/musbooking-api';
-import { musbookingOrderToRecord } from '@triton/musbooking-utils';
+import {
+  musbookingOrderToRecord,
+  notAddedViaApi,
+} from '@triton/musbooking-utils';
 import {
   MusbookingId,
   MusbookingServiceId,
@@ -218,7 +221,9 @@ export const createMachine = () =>
         getUpdatesService: (context) =>
           api.syncList(context.token, context.lastCheck),
         saveRecordsService: (context, event) =>
-          db.createMultiple(event.data.map(musbookingOrderToRecord)),
+          db.createMultiple(
+            event.data.filter(notAddedViaApi).map(musbookingOrderToRecord)
+          ),
         syncService: async (context, event) => {
           for (const item of event.data as BookingDocument<YClientsRecord>[]) {
             try {

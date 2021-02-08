@@ -59,8 +59,8 @@ export const update = <T>(
   fields: Partial<BookingDocument<T>> = {}
 ) => RecordModel.updateOne({ _id: itemId }, fields);
 
-export const markCompleted = (itemId: string, externalId: Id) =>
-  update(itemId, { externalId, completed: true });
+export const markCompleted = (itemId: string, internalId: Id) =>
+  update(itemId, { internalId, completed: true });
 
 export const markCompletedWithError = (itemId: string, message: string) =>
   update(itemId, { completed: true, error: true, errorMessage: message });

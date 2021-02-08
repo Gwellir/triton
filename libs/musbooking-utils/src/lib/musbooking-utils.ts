@@ -16,6 +16,8 @@ export const musbookingStatusToAction = (status: OrderStatus): Action => {
   }
 };
 
+export const notAddedViaApi = (item: Order) => item.sourceType !== 6;
+
 export const musbookingOrderToRecord = (item: Order): BookingRecord<Order> => ({
   origin: MusbookingServiceId,
   internalId: item.id,
@@ -24,4 +26,6 @@ export const musbookingOrderToRecord = (item: Order): BookingRecord<Order> => ({
   completed: false,
   action: musbookingStatusToAction(item.status),
   source: item,
+  error: false,
+  errorMessage: null,
 });
