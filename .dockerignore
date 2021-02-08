@@ -1,0 +1,15 @@
+node_modules
+mongo/
+tools/
+coverage/
+.idea/
+.vscode/
+.editorconfig
+.prettierrc
+.local.env
+jest.*.js
+workspace.json
+tsconfig.base.json
+nx.json
+.eslintrc.json
+.gitignore

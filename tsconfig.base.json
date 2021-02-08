@@ -14,7 +14,18 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@triton/common": ["libs/common/src/index.ts"],
+      "@triton/musbooking-api": ["libs/musbooking-api/src/index.ts"],
+      "@triton/yclients-api": ["libs/yclients-api/src/index.ts"],
+      "@triton/db": ["libs/db/src/index.ts"],
+      "@triton/musbooking-utils": ["libs/musbooking-utils/src/index.ts"],
+      "@triton/yclients-utils": ["libs/yclients-utils/src/index.ts"],
+      "@triton/musbooking-machine": ["libs/musbooking-machine/src/index.ts"],
+      "@triton/yclients-machine": ["libs/yclients-machine/src/index.ts"],
+      "@triton/musbooking-common": ["libs/musbooking-common/src/index.ts"],
+      "@triton/yclients-common": ["libs/yclients-common/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

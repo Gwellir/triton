@@ -1,10 +1,377 @@
 {
-  
-  
   "version": 2,
-  
-  "projects": {},
+  "projects": {
+    "musbooking": {
+      "root": "apps/musbooking",
+      "sourceRoot": "apps/musbooking/src",
+      "projectType": "application",
+      "prefix": "musbooking",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/musbooking",
+            "main": "apps/musbooking/src/main.ts",
+            "tsConfig": "apps/musbooking/tsconfig.app.json",
+            "assets": [
+              "apps/musbooking/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/musbooking/src/environments/environment.ts",
+                  "with": "apps/musbooking/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "musbooking:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/musbooking/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/musbooking"
+          ],
+          "options": {
+            "jestConfig": "apps/musbooking/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "yclients": {
+      "root": "apps/yclients",
+      "sourceRoot": "apps/yclients/src",
+      "projectType": "application",
+      "prefix": "yclients",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/yclients",
+            "main": "apps/yclients/src/main.ts",
+            "tsConfig": "apps/yclients/tsconfig.app.json",
+            "assets": [
+              "apps/yclients/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/yclients/src/environments/environment.ts",
+                  "with": "apps/yclients/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "yclients:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/yclients/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/yclients"
+          ],
+          "options": {
+            "jestConfig": "apps/yclients/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "common": {
+      "root": "libs/common",
+      "sourceRoot": "libs/common/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/common/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/common"
+          ],
+          "options": {
+            "jestConfig": "libs/common/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "musbooking-api": {
+      "root": "libs/musbooking-api",
+      "sourceRoot": "libs/musbooking-api/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/musbooking-api/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/musbooking-api"
+          ],
+          "options": {
+            "jestConfig": "libs/musbooking-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "yclients-api": {
+      "root": "libs/yclients-api",
+      "sourceRoot": "libs/yclients-api/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/yclients-api/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/yclients-api"
+          ],
+          "options": {
+            "jestConfig": "libs/yclients-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "db": {
+      "root": "libs/db",
+      "sourceRoot": "libs/db/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/db/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/db"
+          ],
+          "options": {
+            "jestConfig": "libs/db/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "musbooking-utils": {
+      "root": "libs/musbooking-utils",
+      "sourceRoot": "libs/musbooking-utils/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/musbooking-utils/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/musbooking-utils"
+          ],
+          "options": {
+            "jestConfig": "libs/musbooking-utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "yclients-utils": {
+      "root": "libs/yclients-utils",
+      "sourceRoot": "libs/yclients-utils/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/yclients-utils/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/yclients-utils"
+          ],
+          "options": {
+            "jestConfig": "libs/yclients-utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "musbooking-machine": {
+      "root": "libs/musbooking-machine",
+      "sourceRoot": "libs/musbooking-machine/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/musbooking-machine/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/musbooking-machine"
+          ],
+          "options": {
+            "jestConfig": "libs/musbooking-machine/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "yclients-machine": {
+      "root": "libs/yclients-machine",
+      "sourceRoot": "libs/yclients-machine/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/yclients-machine/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/yclients-machine"
+          ],
+          "options": {
+            "jestConfig": "libs/yclients-machine/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "musbooking-common": {
+      "root": "libs/musbooking-common",
+      "sourceRoot": "libs/musbooking-common/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/musbooking-common/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/musbooking-common"
+          ],
+          "options": {
+            "jestConfig": "libs/musbooking-common/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "yclients-common": {
+      "root": "libs/yclients-common",
+      "sourceRoot": "libs/yclients-common/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/yclients-common/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/yclients-common"
+          ],
+          "options": {
+            "jestConfig": "libs/yclients-common/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
-  }
+    "defaultCollection": "@nrwl/node"
+  },
+  "defaultProject": "musbooking"
 }
