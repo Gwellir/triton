@@ -51,6 +51,7 @@ const RecordModel = mongoose.model<BookingDocument<unknown>>(
 
 export const exists = (item: BookingRecord) =>
   RecordModel.findOne({
+    action: item.action,
     internalId: item.internalId,
     origin: item.origin,
   }).then((doc) => doc !== null);
