@@ -229,38 +229,38 @@ export const createMachine = () =>
             try {
               if (item.action === 'CREATE') {
                 const booking = yclientsRecordToMusbookingOrder(item.source);
+                console.log('CREATE', booking);
+
                 const { id } = await api.syncAdd(context.token, booking);
 
                 const status = { id, status: OrderStatus.CREATE };
                 await api.syncUpdate(context.token, status);
 
                 await db.markCompleted(item._id, id);
-
-                return;
-              }
-
-              if (item.action === 'DELETE') {
+              } else if (item.action === 'DELETE') {
                 const record = await db.findPreviouslyCreatedItem(
                   MusbookingServiceId,
                   item.source.id
                 );
 
-                if (record === null) {
-                  return;
+                if (record !== null) {
+                  console.log('DELETE', record);
+
+                  const status = {
+                    id: record.externalId as MusbookingId,
+                    status: OrderStatus.CANCEL,
+                  };
+                  await api.syncUpdate(context.token, status);
+
+                  await db.markCompleted(item._id, record.externalId);
                 }
-
-                const status = {
-                  id: record.internalId as MusbookingId,
-                  status: OrderStatus.CANCEL,
-                };
-                await api.syncUpdate(context.token, status);
-
-                await db.markCompleted(item._id, record.internalId);
               }
-
-              return;
             } catch (err) {
-              await db.markCompletedWithError(item._id, err.message);
+              const message = err.response
+                ? JSON.stringify(err.response.data)
+                : err.message;
+              console.log('ERROR', message);
+              await db.markCompletedWithError(item._id, message);
             }
           }
         },

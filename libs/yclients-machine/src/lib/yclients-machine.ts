@@ -131,7 +131,7 @@ export const createMachine = () =>
     },
     {
       actions: {
-        log: (context, event) => console.log(event.type, context, event.data),
+        log: (context, event) => console.log(event.type, context),
       },
       guards: {
         isEmpty: (_, event) => event.data.length === 0,
@@ -141,14 +141,25 @@ export const createMachine = () =>
         CHECK_QUEUE_DELAY: 30000, // every 30 seconds
       },
       services: {
-        saveRecordsService: (_, event) =>
-          db.create(yclientsItemToRecord(event.data)),
+        saveRecordsService: async (_, event) => {
+          const record = yclientsItemToRecord(event.data);
+
+          const exists = await db.exists(record);
+
+          if (exists) {
+            console.log('ITEM EXISTS', record);
+            return;
+          }
+
+          return db.create(yclientsItemToRecord(event.data));
+        },
         getPendingItemsService: () => db.findPendingItems(YClientsServiceId),
         syncService: async (context, event) => {
           for (const item of event.data as BookingDocument<Order>[]) {
             try {
               if (item.action === 'CREATE') {
                 const booking = musbookingOrderToYclientsRecord(item.source);
+                console.log('CREATE', booking);
 
                 const response = await api.create(
                   context.token,
@@ -157,30 +168,29 @@ export const createMachine = () =>
                 );
 
                 await db.markCompleted(item._id, response.id);
-
-                return;
-              }
-
-              if (item.action === 'DELETE') {
+              } else if (item.action === 'DELETE') {
                 const record = await db.findPreviouslyCreatedItem(
                   YClientsServiceId,
                   item.source.id
                 );
 
-                if (record === null) {
-                  return;
+                if (record !== null) {
+                  console.log('DELETE', record);
+                  await api.remove(
+                    context.token,
+                    context.userToken,
+                    record.externalId as YClientsId
+                  );
+
+                  await db.markCompleted(item._id, record.externalId);
                 }
-
-                await api.remove(
-                  context.token,
-                  context.userToken,
-                  record.internalId as YClientsId
-                );
-
-                await db.markCompleted(item._id, record.id);
               }
             } catch (err) {
-              await db.markCompletedWithError(item._id, err.message);
+              const message = err.response
+                ? JSON.stringify(err.response.data)
+                : err.message;
+              console.log('ERROR', message);
+              await db.markCompletedWithError(item._id, message);
             }
           }
         },

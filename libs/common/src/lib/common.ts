@@ -1,4 +1,5 @@
 import { AxiosResponse } from 'axios';
+import formatISO from 'date-fns/formatISO';
 import {
   MusbookingId,
   Order,
@@ -94,7 +95,7 @@ export const musbookingOrderToYclientsRecord = (
     name: item.client || 'Клиент MUSBooking',
     email: item.email || 'unknown@email.com',
   },
-  datetime: new Date(item.dateFrom).toISOString(),
+  datetime: formatISO(new Date(item.dateFrom)),
   seance_length:
     dateRangeToHours(new Date(item.dateFrom), new Date(item.dateTo)) * 3600, // In seconds
   save_if_busy: false,
