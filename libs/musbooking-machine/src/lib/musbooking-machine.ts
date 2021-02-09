@@ -233,26 +233,26 @@ export const createMachine = () =>
 
                 const { id } = await api.syncAdd(context.token, booking);
 
-                const status = { id, status: OrderStatus.CREATE };
+                const status = { id, status: OrderStatus.UNKNOWN };
                 await api.syncUpdate(context.token, status);
 
                 await db.markCompleted(item._id, id);
               } else if (item.action === 'DELETE') {
-                const record = await db.findPreviouslyCreatedItem(
+                const recordId = await db.findPreviouslyCreatedItemId(
                   MusbookingServiceId,
                   item.source.id
                 );
 
-                if (record !== null) {
-                  console.log('DELETE', record);
+                if (recordId !== null) {
+                  console.log('DELETE', recordId);
 
                   const status = {
-                    id: record.externalId as MusbookingId,
+                    id: recordId as MusbookingId,
                     status: OrderStatus.CANCEL,
                   };
                   await api.syncUpdate(context.token, status);
 
-                  await db.markCompleted(item._id, record.externalId);
+                  await db.markCompleted(item._id, recordId);
                 }
               }
             } catch (err) {

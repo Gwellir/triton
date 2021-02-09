@@ -73,7 +73,7 @@ export const yclientsRecordToMusbookingOrder = (
   item: YClientsRecord
 ): OrderCreateOptions => ({
   room: yclientsRoomIdToMusbookingRoomId(item.staff_id),
-  date: new Date(item.datetime).toISOString(),
+  date: item.datetime,
   hours: item.seance_length / 3600,
 });
 
@@ -91,7 +91,7 @@ export const musbookingOrderToYclientsRecord = (
     },
   ], // Try empty services TODO Extract all services and map them to hours
   client: {
-    phone: item.phone || '+70000000000',
+    phone: `+7${item.phone}` || '+70000000000',
     name: item.client || 'Клиент MUSBooking',
     email: item.email || 'unknown@email.com',
   },
@@ -100,5 +100,6 @@ export const musbookingOrderToYclientsRecord = (
     dateRangeToHours(new Date(item.dateFrom), new Date(item.dateTo)) * 3600, // In seconds
   save_if_busy: false,
   send_sms: false,
+  custom_color: '6c6c6c',
   comment: `${item.comment || 'Перенесено из MUSBooking'}`,
 });

@@ -20,6 +20,7 @@ export interface YClientsRecord extends Record<string, unknown> {
   save_if_busy: boolean;
   send_sms: boolean;
   comment: string | null;
+  custom_color?: string;
 }
 
 export type WebHookStatus = 'create' | 'update' | 'delete';

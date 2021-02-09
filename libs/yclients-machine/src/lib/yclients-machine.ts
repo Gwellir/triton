@@ -147,7 +147,6 @@ export const createMachine = () =>
           const exists = await db.exists(record);
 
           if (exists) {
-            console.log('ITEM EXISTS', record);
             return;
           }
 
@@ -167,22 +166,22 @@ export const createMachine = () =>
                   booking
                 );
 
-                await db.markCompleted(item._id, response.id);
+                await db.markCompleted(item._id, response.data.id);
               } else if (item.action === 'DELETE') {
-                const record = await db.findPreviouslyCreatedItem(
+                const recordId = await db.findPreviouslyCreatedItemId(
                   YClientsServiceId,
                   item.source.id
                 );
 
-                if (record !== null) {
-                  console.log('DELETE', record);
+                if (recordId !== null) {
+                  console.log('DELETE', recordId);
                   await api.remove(
                     context.token,
                     context.userToken,
-                    record.externalId as YClientsId
+                    recordId as YClientsId
                   );
 
-                  await db.markCompleted(item._id, record.externalId);
+                  await db.markCompleted(item._id, recordId);
                 }
               }
             } catch (err) {

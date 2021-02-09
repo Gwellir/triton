@@ -40,7 +40,7 @@ export const update = (
   item: YClientsRecord
 ) =>
   ax({
-    url: `/records/${process.env.YCLIENTS_COMPANY_ID}/${item.id}`,
+    url: `/record/${process.env.YCLIENTS_COMPANY_ID}/${item.id}`,
     data: {
       ...item,
     },
@@ -52,7 +52,7 @@ export const update = (
 
 export const remove = (token: string, userToken: string, id: number) =>
   ax({
-    url: `/records/${process.env.YCLIENTS_COMPANY_ID}/${id}`,
+    url: `/record/${process.env.YCLIENTS_COMPANY_ID}/${id}`,
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}, User ${userToken}`,

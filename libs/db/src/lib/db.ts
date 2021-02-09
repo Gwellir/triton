@@ -52,8 +52,8 @@ const RecordModel = mongoose.model<BookingDocument<unknown>>(
 export const exists = (item: BookingRecord) =>
   RecordModel.findOne({
     action: item.action,
-    internalId: item.internalId,
-    origin: item.origin,
+    externalId: item.internalId,
+    origin: { $ne: item.origin },
   }).then((doc) => doc !== null);
 
 export const create = (item: BookingRecord) => new RecordModel(item).save();
@@ -67,7 +67,12 @@ export const update = <T>(
 ) => RecordModel.updateOne({ _id: itemId }, fields);
 
 export const markCompleted = (itemId: string, externalId: Id) =>
-  update(itemId, { externalId, completed: true });
+  update(itemId, {
+    externalId,
+    completed: true,
+    error: false,
+    errorMessage: null,
+  });
 
 export const markCompletedWithError = (itemId: string, message: string) =>
   update(itemId, { completed: true, error: true, errorMessage: message });
@@ -79,15 +84,40 @@ export const findPendingItems = (serviceId: string) =>
     completed: false,
   });
 
-export const findPreviouslyCreatedItem = (serviceId: string, externalId: Id) =>
-  RecordModel.findOne({
-    externalId,
+export const findPreviouslyCreatedItemId = async (
+  serviceId: string,
+  id: Id
+) => {
+  let record;
+
+  record = await RecordModel.findOne({
+    internalId: id,
     origin: { $ne: serviceId },
+    externalId: { $ne: null },
+    action: 'CREATE',
+    completed: true,
+    error: false,
+  });
+
+  if (record) {
+    return record.externalId;
+  }
+
+  record = await RecordModel.findOne({
+    externalId: id,
+    origin: serviceId,
     internalId: { $ne: null },
     action: 'CREATE',
     completed: true,
     error: false,
   });
+
+  if (record) {
+    return record.internalId;
+  }
+
+  return null;
+};
 
 export const connect = () =>
   mongoose
