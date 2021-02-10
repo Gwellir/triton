@@ -1,7 +1,7 @@
-import * as http from 'http';
-import * as express from 'express';
-import * as xstate from 'xstate';
-import * as bodyParser from 'body-parser';
+import http from 'http';
+import express from 'express';
+import xstate from 'xstate';
+import bodyParser from 'body-parser';
 import { connect } from '@triton/db';
 import { WebHookAction } from '@triton/yclients-common';
 import { createMachine } from '@triton/yclients-machine';

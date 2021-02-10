@@ -1,4 +1,4 @@
-import * as xstate from 'xstate';
+import xstate from 'xstate';
 import { createMachine } from '@triton/musbooking-machine';
 import { connect } from '@triton/db';
 
