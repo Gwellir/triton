@@ -23,6 +23,28 @@ export interface YClientsRecord extends Record<string, unknown> {
   custom_color?: string;
 }
 
+export interface YClientsService {
+  id: number;
+  salon_service_id: number;
+  title: string;
+  category_id: number;
+  price_min: number;
+  price_max: number;
+  discount: number;
+  comment: string;
+  weight: number;
+  active: number;
+  api_id: string;
+  prepaid: string;
+  is_multi: boolean;
+  capacity: number;
+  image_group: Array<Record<string, unknown>>;
+  staff: Array<{
+    id: number;
+    seance_length: number;
+  }>[];
+}
+
 export type WebHookStatus = 'create' | 'update' | 'delete';
 
 export interface WebHookAction extends Record<string, unknown> {

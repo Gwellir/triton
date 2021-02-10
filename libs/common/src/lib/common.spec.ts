@@ -2,6 +2,7 @@ import {
   dateRangeToHours,
   getResponseData,
   musbookingOrderToYclientsRecord,
+  musbookingOrderToYclientsService,
   musbookingRoomIdToYclientsRoomId,
   yclientsRecordToMusbookingOrder,
   yclientsRoomIdToMusbookingRoomId,
@@ -122,7 +123,7 @@ describe('common', () => {
             cost: 1350,
             discount: 0,
             first_cost: 1350,
-            id: 6671791,
+            id: 6671823,
           },
         ],
         datetime: '2021-02-03T18:00:00+03:00',
@@ -170,7 +171,7 @@ describe('common', () => {
             cost: 1350,
             discount: 0,
             first_cost: 1350,
-            id: 6671791,
+            id: 6671823,
           },
         ],
         datetime: '2021-02-03T18:00:00+03:00',
@@ -185,5 +186,41 @@ describe('common', () => {
 
       expect(musbookingOrderToYclientsRecord(musbooking)).toEqual(yclients);
     });
+  });
+  describe('musbookingOrderToYclientsServices', () => {
+    test.each`
+      roomId     | hours | price
+      ${1233780} | ${1}  | ${450}
+      ${1233780} | ${2}  | ${450 * 2}
+      ${1233780} | ${3}  | ${450 * 3}
+      ${1233780} | ${4}  | ${450 * 4}
+      ${1233780} | ${5}  | ${450 * 5}
+      ${1233780} | ${6}  | ${450 * 6}
+      ${1233780} | ${7}  | ${2700}
+      ${1273231} | ${1}  | ${450}
+      ${1273231} | ${2}  | ${450 * 2}
+      ${1273231} | ${3}  | ${450 * 3}
+      ${1273231} | ${4}  | ${450 * 4}
+      ${1273231} | ${5}  | ${450 * 5}
+      ${1273231} | ${6}  | ${450 * 6}
+      ${1273231} | ${7}  | ${2700}
+      ${1273259} | ${1}  | ${500}
+      ${1273259} | ${2}  | ${500 * 2}
+      ${1273259} | ${3}  | ${500 * 3}
+      ${1273259} | ${4}  | ${500 * 4}
+      ${1273259} | ${5}  | ${500 * 5}
+      ${1273259} | ${6}  | ${500 * 6}
+      ${1273259} | ${7}  | ${3000}
+    `(
+      'find service by room id ($roomId), payment sum ($price) and seance duration ($hours hours)',
+      ({ roomId, price, hours }) => {
+        const found = musbookingOrderToYclientsService(
+          price,
+          roomId,
+          hours * 3600
+        );
+        expect(found).not.toBeNull();
+      }
+    );
   });
 });
