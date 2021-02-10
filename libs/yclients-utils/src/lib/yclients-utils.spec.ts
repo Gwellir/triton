@@ -44,6 +44,8 @@ describe('yclientsUtils', () => {
       date: now,
       completed: false,
       source: item,
+      error: false,
+      errorMessage: null,
     };
 
     expect(yclientsItemToRecord(action)).toEqual(record);

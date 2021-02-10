@@ -91,7 +91,7 @@ export const musbookingOrderToYclientsRecord = (
     },
   ], // Try empty services TODO Extract all services and map them to hours
   client: {
-    phone: `+7${item.phone}` || '+70000000000',
+    phone: `+7${item.phone || '0000000000'}`,
     name: item.client || 'Клиент MUSBooking',
     email: item.email || 'unknown@email.com',
   },

@@ -77,6 +77,7 @@ describe('common', () => {
         send_sms: false,
         comment: '',
         datetime: date,
+        custom_color: '6c6c6c',
       };
       const musbooking: OrderCreateOptions = {
         room: 'ec7e7c14-ad65-44bb-a53e-4ac853d3bc51',
@@ -97,7 +98,7 @@ describe('common', () => {
         roomId: 'ec7e7c14-ad65-44bb-a53e-4ac853d3bc51',
         sourceType: 0,
         client: 'Test',
-        phone: '+70000000000',
+        phone: '0000000000',
         email: 'email@domain.com',
         items: [],
         comment: 'Comment',
@@ -112,17 +113,26 @@ describe('common', () => {
       };
       const yclients: YClientsRecord = {
         staff_id: 1233780,
-        seance_length: 3,
+        seance_length: 10800,
         save_if_busy: false,
         send_sms: false,
-        services: [],
-        datetime: '2021-02-03T18:00:00',
+        services: [
+          {
+            amount: 1,
+            cost: 1350,
+            discount: 0,
+            first_cost: 1350,
+            id: 6671791,
+          },
+        ],
+        datetime: '2021-02-03T18:00:00+03:00',
         client: {
           name: 'Test',
           email: 'email@domain.com',
           phone: '+70000000000',
         },
         comment: 'Comment',
+        custom_color: '6c6c6c',
       };
 
       expect(musbookingOrderToYclientsRecord(musbooking)).toEqual(yclients);
@@ -151,17 +161,26 @@ describe('common', () => {
       };
       const yclients: YClientsRecord = {
         staff_id: 1233780,
-        seance_length: 3,
+        seance_length: 10800,
         save_if_busy: false,
         send_sms: false,
-        services: [],
-        datetime: '2021-02-03T18:00:00',
+        services: [
+          {
+            amount: 1,
+            cost: 1350,
+            discount: 0,
+            first_cost: 1350,
+            id: 6671791,
+          },
+        ],
+        datetime: '2021-02-03T18:00:00+03:00',
         client: {
           phone: '+70000000000',
           name: 'Клиент MUSBooking',
           email: 'unknown@email.com',
         },
         comment: 'Перенесено из MUSBooking',
+        custom_color: '6c6c6c',
       };
 
       expect(musbookingOrderToYclientsRecord(musbooking)).toEqual(yclients);

@@ -47,6 +47,8 @@ describe('musbookingUtils', () => {
         date: now,
         completed: false,
         source: order,
+        error: false,
+        errorMessage: null,
       };
 
       expect(musbookingOrderToRecord(order)).toEqual(record);
