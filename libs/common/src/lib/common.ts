@@ -881,7 +881,7 @@ export const musbookingOrderToYclientsService = (
         i.some((j) => j.id === roomId && j.seance_length === seanceLength)
       )
     )
-    .find((item) => item.price_min === sum);
+    .find((item) => item.price_min === sum || item.price_min === sum * 2);
 
   if (!found) {
     return null;
