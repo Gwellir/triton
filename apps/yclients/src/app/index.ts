@@ -32,10 +32,12 @@ export const start = () => {
       app.use(
         '/api/yclients',
         createRouter((data) => {
-          service.send({
-            type: 'WEB_HOOK',
-            data: data,
-          });
+          setTimeout(() => {
+            service.send({
+              type: 'WEB_HOOK',
+              data: data,
+            });
+          }, 2500); // timeout to prevent cyclic booking creation
         })
       );
 
