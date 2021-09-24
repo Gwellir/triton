@@ -254,6 +254,34 @@ export const createMachine = () =>
 
                   await db.markCompleted(item._id, recordId);
                 }
+              } else if (item.action === 'UPDATE') {
+                const recordId = await db.findPreviouslyCreatedItemId(
+                  MusbookingServiceId,
+                  item.source.id
+                );
+
+                if (recordId !== null) {
+                  console.log('UPDATE', recordId);
+
+                  // Cancel previously created booking
+                  const cancelStatus = {
+                    id: recordId as MusbookingId,
+                    status: OrderStatus.CANCEL,
+                  };
+                  await api.syncUpdate(context.token, cancelStatus);
+
+                  // Create new booking from update record
+                  const booking = yclientsRecordToMusbookingOrder(item.source);
+
+                  const { id } = await api.syncAdd(context.token, booking);
+
+                  const reserveStatus = { id, status: OrderStatus.UNKNOWN };
+
+                  await api.syncUpdate(context.token, reserveStatus);
+
+                  // Update external id for original created record
+                  await db.markCompleted(item._id, id);
+                }
               }
             } catch (err) {
               const message = err.response

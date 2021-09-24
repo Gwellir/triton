@@ -23,7 +23,11 @@
     "update": "nx migrate latest",
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "docker:build-musbooking": "docker build --build-arg APPLICATION=musbooking -t tritonstudio/musbooking:latest .",
+    "docker:build-yclients": "docker build --build-arg APPLICATION=yclients -t tritonstudio/yclients:latest .",
+    "docker:push-musbooking": "docker push tritonstudio/musbooking:latest",
+    "docker:push-yclients": "docker push tritonstudio/yclients:latest"
   },
   "private": true,
   "dependencies": {

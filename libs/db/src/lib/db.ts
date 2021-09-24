@@ -80,7 +80,7 @@ export const markCompletedWithError = (itemId: string, message: string) =>
 export const findPendingItems = (serviceId: string) =>
   RecordModel.find({
     origin: { $ne: serviceId },
-    action: { $in: ['CREATE', 'DELETE'] },
+    action: { $in: ['CREATE', 'DELETE', 'UPDATE'] },
     completed: false,
   });
 
@@ -90,14 +90,18 @@ export const findPreviouslyCreatedItemId = async (
 ) => {
   let record;
 
-  record = await RecordModel.findOne({
-    internalId: id,
-    origin: { $ne: serviceId },
-    externalId: { $ne: null },
-    action: 'CREATE',
-    completed: true,
-    error: false,
-  });
+  record = await RecordModel.findOne(
+    {
+      internalId: id,
+      origin: { $ne: serviceId },
+      externalId: { $ne: null },
+      action: { $in: ['CREATE', 'UPDATE'] },
+      completed: true,
+      error: false,
+    },
+    {},
+    { sort: { date: -1 } }
+  );
 
   if (record) {
     return record.externalId;
