@@ -270,17 +270,24 @@ export const createMachine = () =>
                   };
                   await api.syncUpdate(context.token, cancelStatus);
 
-                  // Create new booking from update record
-                  const booking = yclientsRecordToMusbookingOrder(item.source);
+                  // Create new booking from update record if the update is not
+                  // about the item getting deleted
+                  if (!item.source.deleted) {
+                    const booking = yclientsRecordToMusbookingOrder(item.source);
 
-                  const { id } = await api.syncAdd(context.token, booking);
+                    const { id } = await api.syncAdd(context.token, booking);
 
-                  const reserveStatus = { id, status: OrderStatus.UNKNOWN };
+                    const reserveStatus = { id, status: OrderStatus.UNKNOWN };
 
-                  await api.syncUpdate(context.token, reserveStatus);
+                    await api.syncUpdate(context.token, reserveStatus);
 
-                  // Update external id for original created record
-                  await db.markCompleted(item._id, id);
+                    // Update external id for original created record
+                    await db.markCompleted(item._id, id);
+                  } else {
+                    // Sometimes YCL item removal webhook is received as an UPDATE with 
+                    // data.deleted status (or both entries at once)
+                    await db.markCompleted(item._id, recordId);
+                  }
                 }
               }
             } catch (err) {

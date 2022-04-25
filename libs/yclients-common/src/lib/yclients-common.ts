@@ -21,6 +21,7 @@ export interface YClientsRecord extends Record<string, unknown> {
   send_sms: boolean;
   comment: string | null;
   custom_color?: string;
+  deleted?: boolean;
 }
 
 export interface YClientsService {

@@ -866,7 +866,7 @@ export const yclientsRecordToMusbookingOrder = (
   item: YClientsRecord
 ): OrderCreateOptions => ({
   room: yclientsRoomIdToMusbookingRoomId(item.staff_id),
-  date: item.datetime,
+  date: item.datetime.slice(0, -6), // remove timezone info
   hours: item.seance_length / 3600,
 });
 
