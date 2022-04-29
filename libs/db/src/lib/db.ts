@@ -1,5 +1,7 @@
 import * as mongoose from 'mongoose';
 import { BookingRecord, Id } from '@triton/common';
+import { MusbookingServiceId } from '@triton/musbooking-common';
+import { YClientsServiceId } from '@triton/yclients-common';
 
 export type BookingDocument<T> = BookingRecord<T> & mongoose.Document;
 
@@ -83,6 +85,27 @@ export const findPendingItems = (serviceId: string) =>
     action: { $in: ['CREATE', 'DELETE', 'UPDATE'] },
     completed: false,
   });
+
+// check if there is a suspicious update which may cause an extra record deletion
+export const checkYClientsUpdate = async (
+  musbookingId: Id,
+  yclientsId: Id,
+) => {
+  let record;
+
+  record = await RecordModel.findOne(
+    {
+      origin: YClientsServiceId,
+      internalId: yclientsId,
+      completed: true,
+      error: false,
+    }
+  )
+
+  console.log("CHECK FOR RECORD", record)
+
+  return record ? true : false;
+};
 
 export const findPreviouslyCreatedItemId = async (
   serviceId: string,

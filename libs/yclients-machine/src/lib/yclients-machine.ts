@@ -174,14 +174,23 @@ export const createMachine = () =>
                 );
 
                 if (recordId !== null) {
-                  console.log('DELETE', recordId);
-                  await api.remove(
-                    context.token,
-                    context.userToken,
-                    recordId as YClientsId
+                  const hasYClientsUpdate = await db.checkYClientsUpdate(
+                    item.source.id,
+                    recordId,
                   );
+                  if (!hasYClientsUpdate) {
+                    console.log('DELETE', recordId);
+                    await api.remove(
+                      context.token,
+                      context.userToken,
+                      recordId as YClientsId
+                    );
 
-                  await db.markCompleted(item._id, recordId);
+                    await db.markCompleted(item._id, recordId);
+                  } else {
+                    console.log('ECHO REMOVAL BLOCKED!', recordId)
+                    await db.markCompletedWithError(item._id, "ECHO REMOVAL ATTEMPT")
+                  }
                 }
               }
             } catch (err) {
